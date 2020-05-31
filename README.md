@@ -8,3 +8,11 @@ and some utility functions for simple mesh processing.
 
 It's currently very incomplete and only contains primitives that I needed. I might implement some more in the future.
 
+## Some possible ideas
+
+![](https://krasjet.com/imgs/meshGen/1.gif)
+
+![](https://krasjet.com/imgs/meshGen/2.png)
+
+![](https://krasjet.com/imgs/meshGen/3.png)
+
