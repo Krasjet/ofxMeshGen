@@ -49,10 +49,11 @@ void scaleMesh(ofMesh& mesh, float scale);
 ///
 /// \param mesh The mesh to be processed.
 /// \param iter The number of iterations. In each iteration a single triangle will be divided into 4.
+/// \param recalcNormal if set to true, normal vectors will be recalculated.
 /// \param CW_winding If set to true, use clockwise winding instead.
 /// \param normalizeVert It set to true, the coordinates of each the mid point
 ///        will be normalized to 1. This is useful for generating subdivided spheres.
-void subdivideMesh(ofMesh& mesh, std::size_t iter = 1, bool CW_winding = false, bool normalizeVert = false);
+void subdivideMesh(ofMesh& mesh, std::size_t iter = 1, bool recalcNormal = true, bool CW_winding = false, bool normalizeVert = false);
 
 /// \brief Generate a plane with given width and height.
 ///

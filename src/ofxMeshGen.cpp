@@ -60,7 +60,7 @@ void scaleMesh(ofMesh& mesh, float scale)
 }
 
 // Interal helper function for subdivideMesh.
-static void subdivide(ofMesh& mesh, bool CW_winding, bool normalizeVert)
+static void subdivide(ofMesh& mesh, bool recalcNormal, bool CW_winding, bool normalizeVert)
 {
   using Idx = decltype(mesh.getIndex(0));
   using Edge = std::pair<Idx, Idx>;
@@ -158,16 +158,20 @@ static void subdivide(ofMesh& mesh, bool CW_winding, bool normalizeVert)
     }
   }
   mesh.getIndices() = std::move(newIndices);
+
+  if (recalcNormal) {
+    recalcNormals(mesh);
+  }
 }
 
-void subdivideMesh(ofMesh& mesh, std::size_t iter, bool CW_winding, bool normalizeVert)
+void subdivideMesh(ofMesh& mesh, std::size_t iter, bool recalcNormal, bool CW_winding, bool normalizeVert)
 {
   if (mesh.getMode() != OF_PRIMITIVE_TRIANGLES) {
     throw std::invalid_argument("The mode of input mesh must be OF_PRIMITIVE_TRIANGLES.");
   }
 
   for (std::size_t i = 0; i < iter; ++i) {
-    subdivide(mesh, CW_winding, normalizeVert);
+    subdivide(mesh, recalcNormal, CW_winding, normalizeVert);
   }
 }
 
@@ -340,7 +344,7 @@ ofMesh makeIcosphere(float radius, std::size_t iterations)
   ofMesh mesh = makeIcosahedron(1);
 
   // Then subdivide
-  subdivideMesh(mesh, iterations, false, true);
+  subdivideMesh(mesh, iterations, false, false, true);
 
   // and scale the mesh
   scaleMesh(mesh, radius);
