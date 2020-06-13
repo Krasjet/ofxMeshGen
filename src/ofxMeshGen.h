@@ -104,3 +104,19 @@ ofMesh makeIcosahedron(float radius = 40);
 /// \param radius The radius of the sphere.
 /// \param iterations This will determine the smoothness of the sphere.
 ofMesh makeIcosphere(float radius = 40, std::size_t iterations = 5);
+
+
+/// \brief For personal use.
+///
+/// The winding order of the generated mesh will be counterclock-wise (CCW).
+ofMesh makeKST(float length = 100);
+
+/// \brief For personal use.
+///
+/// The winding order of the generated mesh will be counterclock-wise (CCW).
+ofMesh makeKST2(float length = 100);
+
+/// \brief For personal use.
+///
+/// The winding order of the generated mesh will be counterclock-wise (CCW).
+ofMesh makeKST3(float length = 100);

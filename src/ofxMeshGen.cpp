@@ -241,6 +241,137 @@ ofMesh makeCube(float length)
   return mesh;
 }
 
+ofMesh makeKST(float length)
+{
+  ofMesh mesh;
+
+  float scaling = length / 2;
+
+  mesh.addVertex(scaling * glm::vec3(-1, -1, 1));
+  mesh.addVertex(scaling * glm::vec3(1, -1, 1));
+  mesh.addVertex(scaling * glm::vec3(-1, 1, 1));
+  mesh.addVertex(scaling * glm::vec3(-1, -1, -1));
+  mesh.addVertex(scaling * glm::vec3(1, -1, -1));
+  mesh.addVertex(scaling * glm::vec3(1, 1, -1));
+  mesh.addVertex(scaling * glm::vec3(-1, 1, -1));
+
+  // slice
+  mesh.addTriangle(1, 5, 2);
+
+  mesh.addTriangle(0, 1, 2);
+  mesh.addTriangle(1, 4, 5);
+  mesh.addTriangle(2, 5, 6);
+
+  mesh.addTriangle(0, 6, 3);
+  mesh.addTriangle(0, 2, 6);
+
+  mesh.addTriangle(0, 3, 4);
+  mesh.addTriangle(0, 4, 1);
+
+  mesh.addTriangle(4, 3, 6);
+  mesh.addTriangle(4, 6, 5);
+
+  recalcNormals(mesh);
+  return mesh;
+}
+
+ofMesh makeKST2(float length)
+{
+  ofMesh mesh;
+
+  float scaling = length / 2;
+
+  mesh.addVertex(scaling * glm::vec3(-1, -1, 1));
+  mesh.addVertex(scaling * glm::vec3(1, -1, 1));
+  mesh.addVertex(scaling * glm::vec3(-1, 1, 1));
+  mesh.addVertex(scaling * glm::vec3(-1, -1, -1));
+  mesh.addVertex(scaling * glm::vec3(1, -1, -1));
+  mesh.addVertex(scaling * glm::vec3(1, 1, -1));
+  mesh.addVertex(scaling * glm::vec3(-1, 1, -1));
+
+  mesh.addVertex(scaling * glm::vec3(1, 0, 1));
+  mesh.addVertex(scaling * glm::vec3(0, 1, 1));
+  mesh.addVertex(scaling * glm::vec3(1, 1, 0));
+
+  mesh.addTriangle(7, 9, 8);
+
+  mesh.addTriangle(0, 1, 7);
+  mesh.addTriangle(0, 7, 8);
+  mesh.addTriangle(0, 8, 2);
+
+  mesh.addTriangle(4, 7, 1);
+  mesh.addTriangle(4, 9, 7);
+  mesh.addTriangle(4, 5, 9);
+
+  mesh.addTriangle(6, 9, 5);
+  mesh.addTriangle(6, 8, 9);
+  mesh.addTriangle(6, 2, 8);
+
+  mesh.addTriangle(0, 6, 3);
+  mesh.addTriangle(0, 2, 6);
+
+  mesh.addTriangle(0, 3, 4);
+  mesh.addTriangle(0, 4, 1);
+
+  mesh.addTriangle(4, 3, 6);
+  mesh.addTriangle(4, 6, 5);
+
+  recalcNormals(mesh);
+  return mesh;
+}
+
+ofMesh makeKST3(float length)
+{
+  ofMesh mesh = makeCube(length);
+  subdivideMesh(mesh);
+
+  using Idx = decltype(mesh.getIndex(0));
+  std::vector<Idx> newIndices;
+
+  // the corner to be discarded
+  static const Idx IDX_CUT = 2;
+  // neighbors
+  static const Idx IDX_LEFT = 8;
+  static const Idx IDX_RIGHT = 10;
+  static const Idx IDX_BELOW = 15;
+  static const Idx IDX_TOP = 9;
+
+  // discard the index
+  mesh.removeVertex(IDX_CUT);
+
+  // recalc faces
+  for (size_t i = 0; i < mesh.getNumIndices(); i += 3) {
+    Idx i1 = mesh.getIndex(i);
+    Idx i2 = mesh.getIndex(i + 1);
+    Idx i3 = mesh.getIndex(i + 2);
+    // discard face
+    if (i1 == IDX_CUT || i2 == IDX_CUT || i3 == IDX_CUT) {
+      continue;
+    }
+    // recalculate face index
+    i1 -= i1 < IDX_CUT ? 0 : 1;
+    i2 -= i2 < IDX_CUT ? 0 : 1;
+    i3 -= i3 < IDX_CUT ? 0 : 1;
+    newIndices.emplace_back(i1);
+    newIndices.emplace_back(i2);
+    newIndices.emplace_back(i3);
+  }
+  // missing face
+  newIndices.emplace_back(IDX_TOP);
+  newIndices.emplace_back(IDX_LEFT);
+  newIndices.emplace_back(IDX_RIGHT);
+
+  // extra face
+  newIndices.emplace_back(IDX_LEFT);
+  newIndices.emplace_back(IDX_BELOW);
+  newIndices.emplace_back(IDX_RIGHT);
+
+  mesh.getIndices() = std::move(newIndices);
+
+  recalcNormals(mesh);
+  return mesh;
+}
+
 /// ref: section 9.4 of Schneider and Eberly, Geometric Tools for Computer
 /// Graphics, 2003
 ofMesh makeTetrahedron(float radius)
