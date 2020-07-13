@@ -1,5 +1,5 @@
 ofxMeshGen
-----------
+==========
 
 Originally part of [mesh.deform][deform]. This addon contains several
 alternative mesh primitive generators for [openFrameworks][of] with consistent
@@ -12,7 +12,7 @@ might implement some more in the future.
 There are some extensive documentation in the [header file][header].
 
 Some possible ideas
-===================
+-------------------
 
 ![](https://krasjet.com/imgs/meshGen/1.gif)
 
