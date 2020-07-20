@@ -1,0 +1,16 @@
+ofxMeshGen
+==========
+
+Originally part of mesh.deform [1]. This addon contains several alternative
+mesh primitive generators for openFrameworks [2] with consistent winding order
+(related issue see [3]) and some utility functions for simple mesh processing.
+
+It's currently very incomplete and only contains primitives that I needed. I
+might implement some more in the future.
+
+There are some extensive documentation in the header file [4].
+
+[1]: https://krasjet.com/eidos/mesh.deform/
+[2]: https://openframeworks.cc/
+[3]: https://github.com/openframeworks/openFrameworks/issues/2676
+[4]: ./src/ofxMeshGen.h
